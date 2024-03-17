@@ -91,7 +91,8 @@ export default function Dashboard(): JSX.Element {
 
               <div className={styles.itemTimeWrapper}>
                 <h2 className={styles.itemTime}>
-                  {item.timeframes[interval].current}hrs
+                  {item.timeframes[interval].current}
+                  {item.timeframes[interval].current === 1 ? 'hr' : 'hrs'}
                 </h2>
                 <p className={styles.itemTimeInterval}>
                   {interval === 'daily'
@@ -99,7 +100,8 @@ export default function Dashboard(): JSX.Element {
                     : interval === 'weekly'
                     ? 'Last week'
                     : 'Last month'}{' '}
-                  - {item.timeframes[interval].previous}hrs
+                  - {item.timeframes[interval].previous}
+                  {item.timeframes[interval].current === 1 ? 'hr' : 'hrs'}
                 </p>
               </div>
             </div>
