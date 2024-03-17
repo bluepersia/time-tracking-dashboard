@@ -2,7 +2,23 @@ import styles from './Dashboard.module.css';
 import data from '../data.json';
 import imgAvatar from '../images/image-jeremy.png';
 import imgElipsis from '../images/icon-ellipsis.svg';
+import imgWork from '../images/icon-work.svg';
+import imgPlay from '../images/icon-play.svg';
+import imgStudy from '../images/icon-study.svg';
+import imgExercise from '../images/icon-exercise.svg';
+import imgSocial from '../images/icon-social.svg';
+import imgSelfcare from '../images/icon-self-care.svg';
+
 import { useState } from 'react';
+
+const imgIcons: { [key: string]: string } = {
+  Work: imgWork,
+  Play: imgPlay,
+  Study: imgStudy,
+  Exercise: imgExercise,
+  Social: imgSocial,
+  'Self Care': imgSelfcare,
+};
 
 type IData = {
   title: string;
@@ -29,46 +45,66 @@ export default function Dashboard(): JSX.Element {
         <div className={styles.introTime}>
           <p
             onClick={() => setInterval('daily')}
-            className={styles.timeInterval}
+            className={
+              styles.timeInterval +
+              ' ' +
+              (interval === 'daily' ? styles.active : '')
+            }
           >
             Daily
           </p>
           <p
             onClick={() => setInterval('weekly')}
-            className={styles.timeInterval}
+            className={
+              styles.timeInterval +
+              ' ' +
+              (interval === 'weekly' ? styles.active : '')
+            }
           >
             Weekly
           </p>
           <p
             onClick={() => setInterval('monthly')}
-            className={styles.timeInterval}
+            className={
+              styles.timeInterval +
+              ' ' +
+              (interval === 'monthly' ? styles.active : '')
+            }
           >
             Monthly
           </p>
         </div>
       </div>
-      <main className={styles.grid}>
-        {data &&
-          data.map((item: IData) => (
-            <div className={styles.item + ` ${item.title}`}>
+      {data &&
+        data.map((item: IData) => (
+          <div
+            className={
+              styles.itemWrapper + ' ' + styles[item.title.replace(' ', '')]
+            }
+          >
+            <img src={imgIcons[item.title]} className={styles.itemIcon} />
+            <div className={styles.item}>
               <header className={styles.itemHeader}>
                 <h4 className={styles.itemTitle}>{item.title}</h4>
                 <img src={imgElipsis} className={styles.imgElipsis} />
               </header>
-              <h2 className={styles.itemTime}>
-                {item.timeframes[interval].current}hrs
-              </h2>
-              <p>
-                {interval === 'daily'
-                  ? 'Yesterday'
-                  : interval === 'weekly'
-                  ? 'Last week'
-                  : 'Last month'}{' '}
-                - {item.timeframes[interval].previous}hrs
-              </p>
+
+              <div className={styles.itemTimeWrapper}>
+                <h2 className={styles.itemTime}>
+                  {item.timeframes[interval].current}hrs
+                </h2>
+                <p className={styles.itemTimeInterval}>
+                  {interval === 'daily'
+                    ? 'Yesterday'
+                    : interval === 'weekly'
+                    ? 'Last week'
+                    : 'Last month'}{' '}
+                  - {item.timeframes[interval].previous}hrs
+                </p>
+              </div>
             </div>
-          ))}
-      </main>
+          </div>
+        ))}
     </div>
   );
 }
